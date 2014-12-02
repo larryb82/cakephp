@@ -212,10 +212,12 @@ class RequestHandlerComponent extends Component {
 			$this->respondAs('html', array('charset' => Configure::read('App.encoding')));
 		}
 
-		foreach ($this->_inputTypeMap as $type => $handler) {
-			if ($this->requestedWith($type)) {
-				$input = call_user_func_array(array($controller->request, 'input'), $handler);
-				$controller->request->data = $input;
+		if (!($controller instanceof CakeErrorController)) {
+			foreach ($this->_inputTypeMap as $type => $handler) {
+				if ($this->requestedWith($type)) {
+					$input = call_user_func_array(array($controller->request, 'input'), $handler);
+					$controller->request->data = $input;
+				}
 			}
 		}
 	}
